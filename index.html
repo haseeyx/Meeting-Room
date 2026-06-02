@@ -1,47 +1,81 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>Virtuo | Premium Video Conferencing Platform</title>
+  <title>Meetrix | Premium Video Conferencing Platform</title>
   <!-- PeerJS CDN -->
   <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
   <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Space Grotesk', sans-serif;
-      background: #05050A;
+      font-family: 'Inter', sans-serif;
+      background: #3db9ea;
       min-height: 100vh;
       overflow-x: hidden;
     }
-    .animated-bg {
+
+    /* Premium Animated Gradient Background */
+    .premium-bg {
       position: fixed;
       width: 100%;
       height: 100%;
       top: 0;
       left: 0;
       z-index: -3;
+      background: radial-gradient(ellipse at 20% 30%, #384eb1 0%, #05060A 100%);
+    }
+
+    /* Animated Gradient Flow */
+    .gradient-flow {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -2;
       background: linear-gradient(125deg, #0F0C29 0%, #1A1A3E 25%, #2D1B4E 50%, #1A2A4A 75%, #0F0C29 100%);
       background-size: 400% 400%;
       animation: flowingGradient 18s ease infinite;
     }
-    @keyframes flowingGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-    .color-orb {
+
+    @keyframes flowingGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating Orbs */
+    .glow-orb {
       position: fixed;
       border-radius: 50%;
-      filter: blur(100px);
-      z-index: -2;
+      filter: blur(120px);
+      z-index: -1;
       animation: orbFloat 22s infinite alternate;
     }
+
     .orb-purple { width: 55vw; height: 55vw; background: rgba(139, 92, 246, 0.35); top: -30vh; left: -20vw; }
     .orb-pink { width: 45vw; height: 45vw; background: rgba(236, 72, 153, 0.3); bottom: -25vh; right: -15vw; animation-delay: 2s; }
     .orb-cyan { width: 40vw; height: 40vw; background: rgba(6, 182, 212, 0.25); top: 45vh; left: 55vw; animation-delay: 5s; }
-    @keyframes orbFloat { 0% { transform: translate(0,0) scale(1); opacity: 0.4; } 100% { transform: translate(8%,12%) scale(1.3); opacity: 0.7; } }
+    .orb-gold { width: 35vw; height: 35vw; background: rgba(245, 158, 11, 0.2); bottom: 15vh; left: 20vw; animation-delay: 8s; }
+
+    @keyframes orbFloat {
+      0% { transform: translate(0,0) scale(1); opacity: 0.3; }
+      100% { transform: translate(8%,12%) scale(1.3); opacity: 0.6; }
+    }
+
+    /* Particle System */
     .particle-container {
       position: fixed;
       width: 100%;
@@ -49,19 +83,23 @@
       z-index: -1;
       overflow: hidden;
     }
+
     .particle {
       position: absolute;
       background: radial-gradient(circle, rgba(139, 92, 246, 0.6), rgba(6, 182, 212, 0.2));
       border-radius: 50%;
       animation: particleFlow 25s infinite linear;
     }
+
     @keyframes particleFlow {
       0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
       15% { opacity: 0.8; }
       85% { opacity: 0.8; }
       100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
     }
-    .app-container {
+
+    /* Main Container */
+    .app-wrapper {
       max-width: 1500px;
       margin: 0 auto;
       padding: 1rem;
@@ -71,17 +109,90 @@
       display: flex;
       align-items: center;
     }
-    .premium-card {
+
+    /* Premium Glass Card */
+    .glass-premium {
       background: rgba(8, 10, 24, 0.65);
       backdrop-filter: blur(24px);
       border-radius: 2rem;
       border: 1px solid rgba(139, 92, 246, 0.3);
       width: 100%;
       overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
-    .landing-page { padding: 3rem 4rem; }
-    .hero { text-align: center; margin-bottom: 3rem; }
-    .rainbow-badge {
+
+    /* Header Navigation */
+    .header-nav {
+      padding: 1.5rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 1.6rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #FFFFFF, #A78BFA, #F472B6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .logo i {
+      background: none;
+      -webkit-background-clip: unset;
+      color: #A78BFA;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: #9CA3AF;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    .nav-links a:hover { color: #A78BFA; }
+
+    /* Scrollable Landing Content */
+    .landing-scroll {
+      padding: 2rem 2.5rem;
+      max-height: 65vh;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    .landing-scroll::-webkit-scrollbar { width: 6px; }
+    .landing-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+    .landing-scroll::-webkit-scrollbar-thumb { background: #A78BFA; border-radius: 10px; }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 2.5rem;
+      animation: fadeInUp 0.6s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-section {
+      text-align: center;
+    }
+
+    .premium-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.6rem;
@@ -92,61 +203,186 @@
       font-size: 0.8rem;
       font-weight: 600;
       color: #C084FC;
-      margin-bottom: 2rem;
-      animation: badgeShimmer 3s infinite;
+      margin-bottom: 1.5rem;
+      animation: badgePulse 2s infinite;
     }
-    @keyframes badgeShimmer { 0%,100% { box-shadow: 0 0 5px rgba(139,92,246,0.3); } 50% { box-shadow: 0 0 20px rgba(139,92,246,0.6); } }
+
+    @keyframes badgePulse {
+      0%,100% { box-shadow: 0 0 5px rgba(139,92,246,0.3); }
+      50% { box-shadow: 0 0 20px rgba(139,92,246,0.6); }
+    }
+
     h1 {
-      font-size: 4.8rem;
-      font-weight: 700;
+      font-size: 3.5rem;
+      font-weight: 800;
       background: linear-gradient(135deg, #FFFFFF 0%, #C084FC 25%, #F472B6 50%, #22D3EE 75%, #FBBF24 100%);
       background-size: 300% auto;
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       margin-bottom: 1rem;
-      animation: gradientFlow 8s ease infinite;
+      animation: gradientShift 6s ease infinite;
     }
-    @keyframes gradientFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-    .hero-sub { font-size: 1.1rem; color: #94A3B8; max-width: 600px; margin: 0 auto; line-height: 1.7; }
-    .stats-showcase { display: flex; justify-content: center; gap: 2.5rem; margin: 2.5rem 0; flex-wrap: wrap; }
-    .stat-block { text-align: center; padding: 0.6rem 1.8rem; background: rgba(255,255,255,0.03); border-radius: 2rem; border: 1px solid rgba(139,92,246,0.15); transition: all 0.3s; }
-    .stat-block:hover { transform: translateY(-3px); border-color: rgba(236,72,153,0.4); }
-    .stat-number { font-size: 1.6rem; font-weight: 700; background: linear-gradient(135deg, #C084FC, #22D3EE); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .stat-label { font-size: 0.7rem; color: #64748B; text-transform: uppercase; letter-spacing: 1px; margin-top: 0.2rem; }
-    .features-collection {
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .hero-description {
+      font-size: 1rem;
+      color: #94A3B8;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Stats Row */
+    .stats-container {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 1rem 2rem;
+      background: rgba(255,255,255,0.03);
+      border-radius: 1rem;
+      border: 1px solid rgba(139,92,246,0.2);
+      transition: 0.3s;
+    }
+
+    .stat-item:hover {
+      transform: translateY(-5px);
+      border-color: #A78BFA;
+    }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #A78BFA, #60A5FA);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 0.2rem;
+    }
+
+    /* Features Grid */
+    .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1.5rem;
-      margin: 3rem 0;
+      margin: 1.5rem 0;
     }
+
     .feature-card {
       background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
-      border-radius: 1.5rem;
-      padding: 1.8rem 1.2rem;
+      border-radius: 1.2rem;
+      padding: 1.5rem;
       text-align: center;
-      border: 1px solid rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.05);
       transition: all 0.4s;
     }
-    .feature-card:hover { transform: translateY(-8px); border-color: rgba(139,92,246,0.5); background: linear-gradient(135deg, rgba(79,70,229,0.12), rgba(168,85,247,0.08)); }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(139,92,246,0.5);
+      background: linear-gradient(135deg, rgba(79,70,229,0.12), rgba(168,85,247,0.08));
+    }
+
     .feature-icon {
-      width: 70px;
-      height: 70px;
-      background: linear-gradient(135deg, rgba(139,92,246,0.25), rgba(6,182,212,0.15));
-      border-radius: 1.2rem;
+      width: 65px;
+      height: 65px;
+      background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(6,182,212,0.1));
+      border-radius: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 1rem;
-      font-size: 2rem;
+      font-size: 1.8rem;
+    }
+
+    .feature-icon i {
       background: linear-gradient(135deg, #C084FC, #F472B6, #22D3EE);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
-    .feature-card h4 { color: #F1F5F9; font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .feature-card p { color: #94A3B8; font-size: 0.8rem; line-height: 1.5; }
-    .action-buttons { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0 1rem; }
+
+    .feature-card h4 {
+      color: #F1F5F9;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      color: #94A3B8;
+      font-size: 0.8rem;
+    }
+
+    /* Image Gallery */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .gallery-img {
+      height: 160px;
+      border-radius: 1rem;
+      background-size: cover;
+      background-position: center;
+      transition: 0.3s;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .gallery-img:hover {
+      transform: scale(1.02);
+      border-color: #A78BFA;
+    }
+
+    /* Charts Container */
+    .charts-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .chart-card {
+      background: rgba(0,0,0,0.3);
+      border-radius: 1rem;
+      padding: 1rem;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    canvas {
+      max-height: 220px;
+      width: 100%;
+    }
+
+    /* CTA Buttons */
+    .cta-buttons {
+      display: flex;
+      gap: 1.2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 2rem 0 1rem;
+    }
+
     .btn {
       padding: 0.9rem 2.2rem;
       border-radius: 3rem;
@@ -159,43 +395,100 @@
       transition: all 0.3s;
       border: none;
     }
-    .btn-primary { background: linear-gradient(105deg, #7C3AED, #C084FC, #F472B6); background-size: 200% auto; color: white; box-shadow: 0 8px 20px rgba(124,58,237,0.3); }
-    .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.05); }
-    .btn-secondary { background: rgba(255,255,255,0.05); border: 1.5px solid rgba(139,92,246,0.5); color: #E2E8F0; }
-    .btn-secondary:hover { transform: translateY(-2px); background: rgba(139,92,246,0.15); }
+
+    .btn-primary {
+      background: linear-gradient(105deg, #7C3AED, #C084FC, #F472B6);
+      background-size: 200% auto;
+      color: white;
+      box-shadow: 0 8px 20px rgba(124,58,237,0.3);
+      animation: btnGradient 3s ease infinite;
+    }
+
+    @keyframes btnGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      border: 1.5px solid rgba(139,92,246,0.5);
+      color: #E2E8F0;
+    }
+
+    .btn-primary:hover, .btn-secondary:hover {
+      transform: translateY(-3px);
+      filter: brightness(1.08);
+    }
+
+    /* Panels */
     .panel {
-      background: rgba(8,10,24,0.96);
+      background: rgba(8,10,24,0.98);
       border-radius: 1.5rem;
-      padding: 2rem;
-      margin-top: 2rem;
+      padding: 1.8rem;
+      margin-top: 1.5rem;
       backdrop-filter: blur(16px);
       border: 1px solid rgba(139,92,246,0.3);
       display: none;
-      animation: slideUpFade 0.5s;
+      animation: slideUpPanel 0.5s;
     }
-    @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    @keyframes slideUpPanel {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .panel.active { display: block; }
-    .room-code-container {
+
+    .room-code-box {
       background: linear-gradient(135deg, #1A1A3E, #0F0F2A);
       border-radius: 1rem;
-      padding: 1.5rem;
+      padding: 1.2rem;
       text-align: center;
       border: 1px solid #7C3AED;
     }
-    .code-value { font-size: 2rem; font-weight: 700; letter-spacing: 8px; background: linear-gradient(135deg, #C084FC, #22D3EE); -webkit-background-clip: text; background-clip: text; color: transparent; font-family: monospace; }
-    .input-modern {
+
+    .room-code {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 6px;
+      background: linear-gradient(135deg, #C084FC, #22D3EE);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-family: monospace;
+    }
+
+    .input-field {
       background: #0F111A;
       border: 1.5px solid #2D3748;
-      padding: 0.9rem 1.2rem;
+      padding: 0.8rem 1rem;
       border-radius: 1rem;
       color: white;
       font-size: 0.9rem;
       width: 100%;
       outline: none;
     }
-    .input-modern:focus { border-color: #7C3AED; }
-    .call-interface { display: none; padding: 1.2rem; }
-    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; min-height: 60vh; }
+
+    .input-field:focus {
+      border-color: #7C3AED;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.2);
+    }
+
+    /* Call Interface */
+    .call-interface {
+      display: none;
+      padding: 1.2rem;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      min-height: 55vh;
+    }
+
     .video-tile {
       background: #07070F;
       border-radius: 1.5rem;
@@ -205,8 +498,16 @@
       background-image: linear-gradient(#07070F, #07070F), linear-gradient(135deg, #7C3AED, #F472B6, #22D3EE);
       background-origin: border-box;
       background-clip: padding-box, border-box;
+      transition: 0.3s;
     }
-    video { width: 100%; height: 100%; object-fit: cover; min-height: 300px; }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      min-height: 280px;
+    }
+
     .video-label {
       position: absolute;
       bottom: 12px;
@@ -223,22 +524,38 @@
       gap: 8px;
       z-index: 2;
     }
+
     .info-card {
       position: absolute;
       bottom: 12px;
       right: 12px;
       background: rgba(0,0,0,0.85);
       backdrop-filter: blur(12px);
-      border-radius: 14px;
-      padding: 10px 16px;
-      min-width: 280px;
+      border-radius: 12px;
+      padding: 8px 12px;
+      min-width: 220px;
       z-index: 2;
       border-left: 3px solid #22D3EE;
     }
-    .info-row { display: flex; align-items: center; gap: 8px; font-size: 0.7rem; color: #E2E8F0; margin-bottom: 5px; }
-    .info-row i { width: 14px; font-size: 0.65rem; color: #22D3EE; }
-    .controls { display: flex; justify-content: center; gap: 1rem; margin: 1.2rem 0; flex-wrap: wrap; }
-    .ctrl-button {
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.65rem;
+      color: #E2E8F0;
+      margin-bottom: 4px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1.2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .ctrl-btn {
       width: 52px;
       height: 52px;
       border-radius: 50%;
@@ -249,12 +566,25 @@
       font-size: 1.2rem;
       color: #E2E8F0;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: 0.2s;
       border: 1px solid rgba(139,92,246,0.4);
     }
-    .ctrl-button:hover { transform: scale(1.05); background: #2D2A4E; }
-    .ctrl-button.danger { background: #7F1D1D; border-color: #EF4444; }
-    .ctrl-button.swap { background: #1E293B; border-color: #22D3EE; }
+
+    .ctrl-btn:hover {
+      transform: scale(1.08);
+      background: #2D2A4E;
+    }
+
+    .ctrl-btn.danger {
+      background: #7F1D1D;
+      border-color: #EF4444;
+    }
+
+    .ctrl-btn.swap {
+      background: #1E293B;
+      border-color: #22D3EE;
+    }
+
     .status-bar {
       background: rgba(8,10,24,0.92);
       backdrop-filter: blur(16px);
@@ -267,260 +597,318 @@
       gap: 0.6rem;
       border: 1px solid rgba(139,92,246,0.25);
     }
-    .status-item { background: rgba(0,0,0,0.4); padding: 0.35rem 1rem; border-radius: 2rem; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 6px; color: #9CA3AF; }
-    .footer-note { text-align: center; font-size: 0.65rem; color: #4B5563; margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); }
-    @media (max-width: 900px) { .video-grid { grid-template-columns: 1fr; } .landing-page { padding: 1.5rem; } h1 { font-size: 2.5rem; } .info-card { min-width: 220px; } }
+
+    .status-item {
+      background: rgba(0,0,0,0.4);
+      padding: 0.35rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.7rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #9CA3AF;
+    }
+
+    .footer {
+      padding: 1rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.7rem;
+      color: #6B7280;
+    }
+
+    @media (max-width: 900px) {
+      .video-grid { grid-template-columns: 1fr; }
+      .landing-scroll { padding: 1rem; }
+      h1 { font-size: 2rem; }
+      .info-card { min-width: 180px; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+    }
   </style>
 </head>
 <body>
-<div class="animated-bg"></div>
-<div class="color-orb orb-purple"></div>
-<div class="color-orb orb-pink"></div>
-<div class="color-orb orb-cyan"></div>
+<div class="premium-bg"></div>
+<div class="gradient-flow"></div>
+<div class="glow-orb orb-purple"></div>
+<div class="glow-orb orb-pink"></div>
+<div class="glow-orb orb-cyan"></div>
+<div class="glow-orb orb-gold"></div>
 <div class="particle-container" id="particleContainer"></div>
 
-<div class="app-container">
-  <div class="premium-card">
-    <div id="landingRoot" class="landing-page">
-      <div class="hero">
-        <div class="rainbow-badge"><i class="fas fa-crown"></i> SAQIB SHAHZAD</div>
-        <h2> <span style="background: linear-gradient(135deg, #C084FC, #F472B6, #22D3EE); -webkit-background-clip: text; background-clip: text; color: transparent;"> Where conversations come alive</span></h2>
-        <p class="hero-sub">Experience next-generation video meetings with smart location intelligence, real-time PST clock, and crystal-clear HD quality.</p>
-        <div class="stats-showcase">
-          <div class="stat-block"><div class="stat-number"><i class="fas fa-bolt"></i> 4K</div><div class="stat-label">ULTRA HD</div></div>
-          <div class="stat-block"><div class="stat-number"><i class="fas fa-lock"></i> E2E</div><div class="stat-label">ENCRYPTED</div></div>
-          <div class="stat-block"><div class="stat-number"><i class="fas fa-sync-alt"></i> DUAL</div><div class="stat-label">CAMERA</div></div>
-        </div>
-        <div class="features-collection">
-          <div class="feature-card"><div class="feature-icon"><i class="fas fa-map-marked-alt"></i></div><h4>Detailed Location</h4><p>Shows Road, Landmark (College/Hospital/Market), Area, City, Country</p></div>
-          <div class="feature-card"><div class="feature-icon"><i class="fas fa-clock"></i></div><h4>Pakistan Time (PST)</h4><p>Real-time date & clock synchronized with UTC+5</p></div>
-          <div class="feature-card"><div class="feature-icon"><i class="fas fa-pen-fancy"></i></div><h4>Status Note</h4><p>Add your personal message displayed on your video tile</p></div>
-          <div class="feature-card"><div class="feature-icon"><i class="fas fa-camera-retro"></i></div><h4>Camera Swap</h4><p>Seamless switch between front and back camera</p></div>
-        </div>
-        <div class="action-buttons">
-          <button id="createMeetingBtn" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Create Meeting</button>
-          <button id="showJoinBtn" class="btn btn-secondary"><i class="fas fa-door-open"></i> Join Meeting</button>
+<div class="app-wrapper">
+  <div class="glass-premium">
+    <!-- Header -->
+    <div class="header-nav">
+      <div class="logo"><i class="fas fa-video"></i> Meetrix</div>
+      <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">Features</a>
+        <a href="#">Analytics</a>
+        <a href="#">Security</a>
+      </div>
+    </div>
+
+    <!-- Scrollable Landing Content -->
+    <div id="landingRoot" class="landing-scroll">
+      <!-- Page 1: Hero Section -->
+      <div class="section hero-section">
+        <div class="premium-badge"><i class="fas fa-crown"></i> ENTERPRISE GRADE</div>
+        <h1>Where Conversations<br>Come Alive</h1>
+        <p class="hero-description">Premium peer-to-peer video meetings with location intelligence, real-time PST clock, and crystal-clear HD quality.</p>
+        <div class="stats-container">
+          <div class="stat-item"><div class="stat-number">4K</div><div class="stat-label">ULTRA HD</div></div>
+          <div class="stat-item"><div class="stat-number">E2E</div><div class="stat-label">ENCRYPTED</div></div>
+          <div class="stat-item"><div class="stat-number">Dual</div><div class="stat-label">CAMERA</div></div>
+          <div class="stat-item"><div class="stat-number">150+</div><div class="stat-label">COUNTRIES</div></div>
         </div>
       </div>
+
+      <!-- Page 2: Features Section -->
+      <div class="section">
+        <h2 style="margin-bottom: 1rem; color:white;">Premium Features</h2>
+        <div class="features-grid">
+          <div class="feature-card"><div class="feature-icon"><i class="fas fa-map-marked-alt"></i></div><h4>Smart Location</h4><p>Road, Landmark, Area, City, Country with auto-retry (3 attempts)</p></div>
+          <div class="feature-card"><div class="feature-icon"><i class="fas fa-clock"></i></div><h4>Pakistan Time (PST)</h4><p>Real-time UTC+5 synchronized clock</p></div>
+          <div class="feature-card"><div class="feature-icon"><i class="fas fa-pen-fancy"></i></div><h4>Status Note</h4><p>Personal message displayed on video tile</p></div>
+          <div class="feature-card"><div class="feature-icon"><i class="fas fa-camera-retro"></i></div><h4>Camera Swap</h4><p>Seamless front/back camera toggle</p></div>
+        </div>
+      </div>
+
+   
+
+      <!-- Page 4: Charts Section -->
+ 
+
+      <!-- Page 5: Cross-Platform Section -->
+      <div class="section">
+        <h2 style="margin-bottom: 1rem; color:white;">Works Everywhere</h2>
+        <div class="features-grid">
+          <div class="feature-card"><div class="feature-icon"><i class="fab fa-apple"></i></div><h4>iPhone & iPad</h4><p>Fully optimized for iOS Safari</p></div>
+          <div class="feature-card"><div class="feature-icon"><i class="fab fa-android"></i></div><h4>Android Ready</h4><p>Chrome, Firefox, Edge</p></div>
+          <div class="feature-card"><div class="feature-icon"><i class="fas fa-laptop-code"></i></div><h4>Laptop & Desktop</h4><p>Windows, Mac, Linux</p></div>
+          <div class="feature-card"><div class="feature-icon"><i class="fas fa-tablet-alt"></i></div><h4>Tablet Support</h4><p>Responsive design</p></div>
+        </div>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="cta-buttons">
+        <button id="createMeetingBtn" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Create Meeting</button>
+        <button id="showJoinBtn" class="btn btn-secondary"><i class="fas fa-door-open"></i> Join Meeting</button>
+      </div>
+
+      <!-- Create Meeting Panel -->
       <div id="createPanel" class="panel">
         <h3 style="color:#E2E8F0; margin-bottom:0.8rem;"><i class="fas fa-calendar-plus"></i> Your Private Room</h3>
-        <p style="color:#6B7280; margin-bottom:1rem;">Share this secure code with the person you want to connect with</p>
-        <div class="room-code-container"><div style="font-size:0.7rem; color:#C084FC;">MEETING CODE</div><div class="code-value" id="roomCodeDisplay">------</div></div>
+        <p style="color:#9CA3AF; margin-bottom:1rem;">Share this secure code with the person you want to connect with</p>
+        <div class="room-code-box">
+          <div style="font-size:0.7rem; color:#C084FC;">MEETING CODE</div>
+          <div class="room-code" id="roomCodeDisplay">------</div>
+        </div>
         <button id="copyCodeBtn" class="btn btn-primary" style="width:100%; margin-top:1rem;"><i class="fas fa-copy"></i> Copy Code</button>
-        <div id="waitingMsg" style="margin-top:1rem; text-align:center; color:#6B7280;"><i class="fas fa-spinner fa-pulse"></i> Waiting for participant...</div>
+        <div id="waitingMsg" style="margin-top:1rem; text-align:center; color:#9CA3AF;"><i class="fas fa-spinner fa-pulse"></i> Waiting for participant...</div>
       </div>
+
+      <!-- Join Meeting Panel -->
       <div id="joinPanel" class="panel">
         <h3 style="color:#E2E8F0; margin-bottom:0.5rem;"><i class="fas fa-sign-in-alt"></i> Join Meeting</h3>
-        <p style="color:#6B7280; margin-bottom:1rem;">Enter the meeting code provided by the host</p>
-        <input type="text" id="joinCodeInput" class="input-modern" placeholder="e.g., A1B2C3D4" maxlength="10">
+        <p style="color:#9CA3AF; margin-bottom:1rem;">Enter the meeting code provided by the host</p>
+        <input type="text" id="joinCodeInput" class="input-field" placeholder="e.g., A1B2C3D4" maxlength="10">
         <div style="margin: 0.8rem 0;">
-          <label style="color:#6B7280; font-size:0.75rem;"><i class="fas fa-pen"></i> Your Status Note</label>
-          <input type="text" id="noteInput" class="input-modern" placeholder="e.g., Creative Session" maxlength="50">
+          <label style="color:#9CA3AF; font-size:0.75rem;"><i class="fas fa-pen"></i> Your Status Note</label>
+          <input type="text" id="noteInput" class="input-field" placeholder="e.g., Creative Session" maxlength="50">
         </div>
         <button id="connectBtn" class="btn btn-primary" style="width:100%;"><i class="fas fa-arrow-right"></i> Connect Now</button>
-        <div id="joinMsg" style="margin-top:0.8rem; text-align:center; color:#6B7280;"><i class="fas fa-info-circle"></i> Enter code to connect</div>
+        <div id="joinMsg" style="margin-top:0.8rem; text-align:center; color:#9CA3AF;"><i class="fas fa-info-circle"></i> Enter code to connect</div>
       </div>
-      <div class="footer-note"><i class="fas fa-shield-alt"></i> Peer-to-Peer · End-to-End Encrypted · No Data Storage</div>
     </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <i class="fas fa-shield-alt"></i> Peer-to-Peer · End-to-End Encrypted · Works on iPhone, Android, Laptop, Tablet · Location auto-retry (3 attempts)
+    </div>
+
+    <!-- Call Interface -->
     <div id="callInterface" class="call-interface">
       <div class="video-grid">
         <div class="video-tile">
           <video id="localVideo" autoplay muted playsinline></video>
           <div class="video-label"><i class="fas fa-user-circle"></i> You <span id="hostTag"></span></div>
           <div id="localInfo" class="info-card">
-            <div class="info-row"><i class="fas fa-map-pin"></i><span id="localLocation">📍 Detecting your location...</span></div>
+            <div class="info-row"><i class="fas fa-map-pin"></i><span id="localLocation">📍 Detecting...</span></div>
             <div class="info-row"><i class="fas fa-calendar"></i><span id="localDateTime">--</span></div>
-            <div class="info-row"><i class="fas fa-pen"></i><span id="localNote" style="color:#FBBF24;">---</span></div>
+            <div class="info-row"><i class="fas fa-pen"></i><span id="localNote">---</span></div>
           </div>
         </div>
         <div class="video-tile">
           <video id="remoteVideo" autoplay playsinline></video>
           <div class="video-label"><i class="fas fa-user-friends"></i> Participant</div>
           <div id="remoteInfo" class="info-card">
-            <div class="info-row"><i class="fas fa-map-pin"></i><span id="remoteLocation">⏳ Awaiting participant...</span></div>
+            <div class="info-row"><i class="fas fa-map-pin"></i><span id="remoteLocation">⏳ Awaiting...</span></div>
             <div class="info-row"><i class="fas fa-calendar"></i><span id="remoteDateTime">--</span></div>
-            <div class="info-row"><i class="fas fa-pen"></i><span id="remoteNote" style="color:#FBBF24;">---</span></div>
+            <div class="info-row"><i class="fas fa-pen"></i><span id="remoteNote">---</span></div>
           </div>
         </div>
       </div>
       <div class="controls">
-        <button id="audioToggle" class="ctrl-button"><i class="fas fa-microphone"></i></button>
-        <button id="videoToggle" class="ctrl-button"><i class="fas fa-video"></i></button>
-        <button id="cameraSwap" class="ctrl-button swap"><i class="fas fa-sync-alt"></i></button>
-        <button id="endCall" class="ctrl-button danger"><i class="fas fa-phone-slash"></i></button>
+        <button id="audioToggle" class="ctrl-btn"><i class="fas fa-microphone"></i></button>
+        <button id="videoToggle" class="ctrl-btn"><i class="fas fa-video"></i></button>
+        <button id="cameraSwap" class="ctrl-btn swap"><i class="fas fa-sync-alt"></i></button>
+        <button id="endCall" class="ctrl-btn danger"><i class="fas fa-phone-slash"></i></button>
       </div>
       <div class="status-bar">
         <div class="status-item"><i class="fas fa-link"></i> <span id="callStatus">Connected</span></div>
         <div class="status-item"><i class="fas fa-clock"></i> <span id="pstClock">--:--:-- PST</span></div>
         <div class="status-item"><i class="fas fa-camera"></i> <span id="camDirection">Front</span></div>
       </div>
-      <div class="footer-note"><i class="fas fa-sync-alt"></i> Camera Swap Available · Shows Road, Landmark, Area, City, Country</div>
     </div>
   </div>
 </div>
 
 <script>
-  // Particles
-  for(let i=0;i<80;i++){ let p=document.createElement('div'); p.className='particle'; p.style.width=Math.random()*4+2+'px'; p.style.height=p.style.width; p.style.left=Math.random()*100+'%'; p.style.animationDelay=Math.random()*25+'s'; p.style.animationDuration=15+Math.random()*30+'s'; document.getElementById('particleContainer').appendChild(p); }
+  // ========== PARTICLES GENERATION ==========
+  for(let i = 0; i < 80; i++) {
+    let particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.width = Math.random() * 4 + 2 + 'px';
+    particle.style.height = particle.style.width;
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 25 + 's';
+    particle.style.animationDuration = 15 + Math.random() * 30 + 's';
+    document.getElementById('particleContainer').appendChild(particle);
+  }
 
-  // PST Clock
-  function getPSTDateTime(){ let d=new Date(); let pst=new Date(d.getTime()+(5*3600000)+(d.getTimezoneOffset()*60000)); return pst.toLocaleDateString('en-PK',{day:'2-digit',month:'short',year:'numeric'})+' '+pst.toLocaleTimeString('en-PK',{hour12:true,hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
-  function getPSTTime(){ let d=new Date(); let pst=new Date(d.getTime()+(5*3600000)+(d.getTimezoneOffset()*60000)); return pst.toLocaleTimeString('en-PK',{hour12:true,hour:'2-digit',minute:'2-digit',second:'2-digit'})+' PST'; }
-  setInterval(()=>{ let el=document.getElementById('pstClock'); if(el) el.innerText=getPSTTime(); },1000);
+  // ========== CHARTS INITIALIZATION ==========
+  // Quality Chart
+  const ctx1 = document.getElementById('qualityChart')?.getContext('2d');
+  if(ctx1) {
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['Video', 'Audio', 'Latency', 'Stability'],
+        datasets: [{
+          label: 'Quality %',
+          data: [96, 98, 94, 97],
+          backgroundColor: 'rgba(139, 92, 246, 0.7)',
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: { legend: { labels: { color: '#9CA3AF' } } }
+      }
+    });
+  }
 
-  // Camera Swap
-  let currentCam = "user";
-  let localStreamObj = null;
+  // Coverage Chart
+  const ctx2 = document.getElementById('coverageChart')?.getContext('2d');
+  if(ctx2) {
+    new Chart(ctx2, {
+      type: 'doughnut',
+      data: {
+        labels: ['Asia Pacific', 'Europe', 'North America', 'Middle East'],
+        datasets: [{
+          data: [92, 89, 95, 88],
+          backgroundColor: ['#A78BFA', '#60A5FA', '#F472B6', '#34D399']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { labels: { color: '#9CA3AF' } } }
+      }
+    });
+  }
+
+  // ========== PST CLOCK FUNCTION ==========
+  function getPSTDateTime() {
+    let d = new Date();
+    let pst = new Date(d.getTime() + (5 * 3600000) + (d.getTimezoneOffset() * 60000));
+    return pst.toLocaleDateString('en-PK', {day:'2-digit', month:'short', year:'numeric'}) + ' ' + 
+           pst.toLocaleTimeString('en-PK', {hour12: true, hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  }
+
+  function getPSTTime() {
+    let d = new Date();
+    let pst = new Date(d.getTime() + (5 * 3600000) + (d.getTimezoneOffset() * 60000));
+    return pst.toLocaleTimeString('en-PK', {hour12: true, hour:'2-digit', minute:'2-digit', second:'2-digit'}) + ' PST';
+  }
+
+  setInterval(() => {
+    let clockEl = document.getElementById('pstClock');
+    if(clockEl) clockEl.innerText = getPSTTime();
+  }, 1000);
+
+  // ========== CAMERA SWAP FUNCTIONALITY ==========
+  let currentCamera = "user";
+  let localStreamObject = null;
+
   async function swapCamera() {
-    if(!localStreamObj) return;
-    currentCam = currentCam === "user" ? "environment" : "user";
-    document.getElementById('camDirection').innerText = currentCam === "user" ? "Front" : "Back";
+    if(!localStreamObject) return;
+    currentCamera = currentCamera === "user" ? "environment" : "user";
+    document.getElementById('camDirection').innerText = currentCamera === "user" ? "Front" : "Back";
     try {
-      const newStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: currentCam }, audio: true });
+      const newStream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: currentCamera }, 
+        audio: true 
+      });
       const newVideoTrack = newStream.getVideoTracks()[0];
-      const oldVideoTrack = localStreamObj.getVideoTracks()[0];
-      localStreamObj.removeTrack(oldVideoTrack);
-      localStreamObj.addTrack(newVideoTrack);
-      document.getElementById('localVideo').srcObject = localStreamObj;
-      if(window.currentCall && window.currentCall.peerConnection){
+      const oldVideoTrack = localStreamObject.getVideoTracks()[0];
+      localStreamObject.removeTrack(oldVideoTrack);
+      localStreamObject.addTrack(newVideoTrack);
+      document.getElementById('localVideo').srcObject = localStreamObject;
+      
+      if(window.currentCall && window.currentCall.peerConnection) {
         const sender = window.currentCall.peerConnection.getSenders().find(s => s.track && s.track.kind === 'video');
         if(sender) sender.replaceTrack(newVideoTrack);
       }
-    } catch(e) { console.warn("Camera swap failed"); }
+    } catch(e) {
+      console.warn("Camera swap failed:", e);
+    }
   }
 
-  // DETAILED LOCATION - With correct city detection and nearby landmarks
+  // ========== DETAILED LOCATION WITH RETRY (3 ATTEMPTS) ==========
   async function getDetailedLocation() {
     const locSpan = document.getElementById('localLocation');
-    if(locSpan) locSpan.innerHTML = "📍 Getting your precise location...";
+    if(locSpan) locSpan.innerHTML = "📍 Getting location...";
     
     return new Promise((resolve) => {
       if(!navigator.geolocation) {
-        if(locSpan) locSpan.innerHTML = "📍 Location services not supported";
-        resolve("Location services not supported");
+        if(locSpan) locSpan.innerHTML = "📍 Location not supported";
+        resolve("Location not supported");
         return;
       }
       
       let attempts = 0;
       const maxAttempts = 3;
       
-      const tryGPS = () => {
+      const attemptLocation = () => {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
             
-            if(locSpan) locSpan.innerHTML = `📍 Getting address from GPS...`;
+            if(locSpan) locSpan.innerHTML = "📍 Getting address...";
             
             try {
-              // Using OpenStreetMap Nominatim with detailed parameters
-              const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1&extratags=1&namedetails=1`);
-              const data = await res.json();
+              const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
+              const data = await response.json();
               
               if(data && data.address) {
                 const addr = data.address;
-                
-                // Get road/street name
-                const road = addr.road || addr.street || "";
-                
-                // Get house number
-                const house = addr.house_number || "";
-                
-                // Get landmark - nearby famous places
-                let landmark = "";
-                if(data.extratags && data.extratags.amenity) {
-                  landmark = data.extratags.amenity;
-                } else if(addr.amenity) {
-                  landmark = addr.amenity;
-                } else if(addr.shop) {
-                  landmark = addr.shop;
-                } else if(addr.tourism) {
-                  landmark = addr.tourism;
-                }
-                
-                // Format landmark nicely
-                if(landmark) {
-                  landmark = landmark.replace(/_/g, ' ');
-                  landmark = landmark.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-                }
-                
-                // Get area/suburb/neighborhood
-                const area = addr.suburb || addr.neighbourhood || addr.village || "";
-                
-                // Get city/town - THIS IS THE CRITICAL PART FOR CORRECT CITY
-                let city = addr.city || addr.town || addr.state_district || "";
-                
-                // If city is still empty, try county or region
-                if(!city) {
-                  city = addr.county || addr.region || "";
-                }
-                
-                // Get state/province
-                const state = addr.state || "";
-                
-                // Get country
+                const road = addr.road || "";
+                const landmark = addr.amenity || addr.shop || addr.tourism || "";
+                const area = addr.suburb || addr.neighbourhood || "";
+                const city = addr.city || addr.town || "";
                 const country = addr.country || "Pakistan";
                 
-                // Build detailed location string with proper formatting
-                let locationParts = [];
+                let parts = [];
+                if(road) parts.push(road);
+                if(landmark) parts.push(`📍 Near ${landmark.split('_').join(' ')}`);
+                if(area) parts.push(area);
+                if(city) parts.push(city);
+                if(country) parts.push(country);
                 
-                // Add road with house number
-                if(road) {
-                  if(house) locationParts.push(`${house} ${road}`);
-                  else locationParts.push(road);
-                }
-                
-                // Add landmark (college, hospital, market, etc.)
-                if(landmark && landmark.length > 2) {
-                  locationParts.push(`📍 Near ${landmark}`);
-                }
-                
-                // Add area
-                if(area && area !== road) {
-                  locationParts.push(area);
-                }
-                
-                // Add city - ensure correct city name
-                if(city && city.length > 1) {
-                  locationParts.push(city);
-                }
-                
-                // Add country
-                if(country) {
-                  locationParts.push(country);
-                }
-                
-                let finalLocation = locationParts.join(", ");
-                
-                // Clean up any double commas or empty parts
-                finalLocation = finalLocation.replace(/, ,/g, ',').replace(/,\s*,/g, ',').replace(/^,\s*/, '');
-                
-                // If location is too short or seems incorrect, try second API call for verification
-                if(finalLocation.length < 15 || !city) {
-                  try {
-                    // Second attempt with different API for better accuracy
-                    const res2 = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`);
-                    const data2 = await res2.json();
-                    if(data2 && data2.city) {
-                      const city2 = data2.city;
-                      const principalSubdivision = data2.principalSubdivision || "";
-                      const country2 = data2.countryName || "Pakistan";
-                      
-                      let betterParts = [];
-                      if(road) betterParts.push(road);
-                      if(area) betterParts.push(area);
-                      betterParts.push(city2);
-                      if(principalSubdivision && principalSubdivision !== city2) betterParts.push(principalSubdivision);
-                      betterParts.push(country2);
-                      
-                      let betterLocation = betterParts.join(", ");
-                      if(betterLocation.length > finalLocation.length) {
-                        finalLocation = betterLocation;
-                      }
-                    }
-                  } catch(e) {}
-                }
-                
+                let finalLocation = parts.join(", ");
                 if(finalLocation.length > 5) {
                   if(locSpan) locSpan.innerHTML = `📍 ${finalLocation}`;
                   resolve(finalLocation);
@@ -528,287 +916,387 @@
                 }
               }
             } catch(e) {
-              console.log("Geocoding error:", e);
+              console.warn("Geocoding error:", e);
             }
             
-            // Fallback to coordinates with city name approximation
-            const coordLocation = `${lat.toFixed(4)}°, ${lng.toFixed(4)}°`;
-            if(locSpan) locSpan.innerHTML = `📍 ${coordLocation}`;
-            resolve(coordLocation);
+            const fallback = `${lat.toFixed(4)}°, ${lng.toFixed(4)}°`;
+            if(locSpan) locSpan.innerHTML = `📍 ${fallback}`;
+            resolve(fallback);
           },
           (error) => {
             attempts++;
             if(attempts < maxAttempts) {
-              if(locSpan) locSpan.innerHTML = `📍 Retrying location (${attempts}/${maxAttempts})...`;
-              setTimeout(tryGPS, 2000);
+              if(locSpan) locSpan.innerHTML = `📍 Retry ${attempts}/${maxAttempts}...`;
+              setTimeout(attemptLocation, 2000);
             } else {
-              let msg = "📍 Please enable location services for accurate position";
-              if(error.code === error.PERMISSION_DENIED) msg = "📍 Allow location access to see your position";
-              if(locSpan) locSpan.innerHTML = msg;
-              resolve(msg);
+              let errorMsg = error.code === 1 ? "📍 Allow location access" : "📍 Location unavailable";
+              if(locSpan) locSpan.innerHTML = errorMsg;
+              resolve(errorMsg);
             }
           },
-          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+          { enableHighAccuracy: true, timeout: 10000 }
         );
       };
       
-      tryGPS();
+      attemptLocation();
     });
   }
 
-  // WebRTC Core
-  let localStream=null, peer=null, currentCall=null, dataChannel=null, isCreator=false;
-  let audioActive=true, videoActive=true, myLocation="Detecting...", myNote="";
+  // ========== WEBRTC CORE VARIABLES ==========
+  let localStream = null;
+  let peerInstance = null;
+  let currentCall = null;
+  let dataChannel = null;
+  let isCreator = false;
+  let audioEnabled = true;
+  let videoEnabled = true;
+  let myLocation = "Detecting...";
+  let myStatusNote = "";
 
-  const landingDiv=document.getElementById('landingRoot'), callDiv=document.getElementById('callInterface');
-  const createPanelDiv=document.getElementById('createPanel'), joinPanelDiv=document.getElementById('joinPanel');
-  const createRoomBtn=document.getElementById('createMeetingBtn'), showJoinBtn=document.getElementById('showJoinBtn');
-  const roomCodeSpan=document.getElementById('roomCodeDisplay'), copyCodeBtn=document.getElementById('copyCodeBtn');
-  const joinCodeField=document.getElementById('joinCodeInput'), noteField=document.getElementById('noteInput');
-  const connectMeeting=document.getElementById('connectBtn'), waitingDiv=document.getElementById('waitingMsg'), joinMsgDiv=document.getElementById('joinMsg');
-  const localVideo=document.getElementById('localVideo'), remoteVideo=document.getElementById('remoteVideo');
-  const audioToggleBtn=document.getElementById('audioToggle'), videoToggleBtn=document.getElementById('videoToggle'), endCallBtn=document.getElementById('endCall');
-  const swapCamBtn=document.getElementById('cameraSwap');
-  const callStatusSpan=document.getElementById('callStatus');
-  const localLocSpan=document.getElementById('localLocation'), remoteLocSpan=document.getElementById('remoteLocation');
-  const localDT=document.getElementById('localDateTime'), remoteDT=document.getElementById('remoteDateTime');
-  const localNoteSpan=document.getElementById('localNote'), remoteNoteSpan=document.getElementById('remoteNote');
-  const hostTagSpan=document.getElementById('hostTag');
+  // ========== DOM ELEMENTS ==========
+  const landingDiv = document.getElementById('landingRoot');
+  const callDiv = document.getElementById('callInterface');
+  const createPanelDiv = document.getElementById('createPanel');
+  const joinPanelDiv = document.getElementById('joinPanel');
+  const createRoomBtn = document.getElementById('createMeetingBtn');
+  const showJoinBtn = document.getElementById('showJoinBtn');
+  const roomCodeSpan = document.getElementById('roomCodeDisplay');
+  const copyCodeBtn = document.getElementById('copyCodeBtn');
+  const joinCodeInput = document.getElementById('joinCodeInput');
+  const noteInput = document.getElementById('noteInput');
+  const connectMeetingBtn = document.getElementById('connectBtn');
+  const waitingMsgDiv = document.getElementById('waitingMsg');
+  const joinMsgDiv = document.getElementById('joinMsg');
+  const localVideo = document.getElementById('localVideo');
+  const remoteVideo = document.getElementById('remoteVideo');
+  const audioToggleBtn = document.getElementById('audioToggle');
+  const videoToggleBtn = document.getElementById('videoToggle');
+  const endCallBtn = document.getElementById('endCall');
+  const swapCamBtn = document.getElementById('cameraSwap');
+  const callStatusSpan = document.getElementById('callStatus');
+  const localLocSpan = document.getElementById('localLocation');
+  const remoteLocSpan = document.getElementById('remoteLocation');
+  const localDTspan = document.getElementById('localDateTime');
+  const remoteDTspan = document.getElementById('remoteDateTime');
+  const localNoteSpan = document.getElementById('localNote');
+  const remoteNoteSpan = document.getElementById('remoteNote');
+  const hostTagSpan = document.getElementById('hostTag');
 
-  function updateLocal(){ 
-    if(localLocSpan && localLocSpan.innerText !== myLocation) localLocSpan.innerText = myLocation; 
-    if(localDT) localDT.innerText=getPSTDateTime(); 
-    if(localNoteSpan) localNoteSpan.innerText=myNote || "No note"; 
+  // ========== HELPER FUNCTIONS ==========
+  function updateLocalUI() {
+    if(localDTspan) localDTspan.innerText = getPSTDateTime();
+    if(localNoteSpan) localNoteSpan.innerText = myStatusNote || "No note";
   }
-  
-  async function initLocation(){ 
-    myLocation = await getDetailedLocation(); 
-    updateLocal(); 
-    return myLocation; 
+
+  async function initMyLocation() {
+    myLocation = await getDetailedLocation();
+    updateLocalUI();
+    return myLocation;
   }
-  
-  async function sendData(){ 
-    if(dataChannel && dataChannel.open){ 
-      dataChannel.send({type:'location',data:myLocation}); 
-      dataChannel.send({type:'note',data:myNote}); 
-      dataChannel.send({type:'datetime',data:getPSTDateTime()}); 
-    } 
-  }
-  
-  function handleData(payload){ 
-    if(payload.type==='location') {
-      remoteLocSpan.innerText = payload.data;
-    } else if(payload.type==='note') {
-      remoteNoteSpan.innerText = payload.data || "---";
-    } else if(payload.type==='datetime') {
-      remoteDT.innerText = payload.data;
+
+  async function sendDataToPeer() {
+    if(dataChannel && dataChannel.open) {
+      dataChannel.send({ type: 'location', data: myLocation });
+      dataChannel.send({ type: 'note', data: myStatusNote });
+      dataChannel.send({ type: 'datetime', data: getPSTDateTime() });
     }
   }
-  
-  function setupChannel(conn){ 
-    dataChannel=conn; 
-    dataChannel.on('open',async()=>{ 
-      await sendData(); 
-      setInterval(()=>{ 
-        if(dataChannel && dataChannel.open) dataChannel.send({type:'datetime',data:getPSTDateTime()}); 
-      }, 2000); 
-    }); 
-    dataChannel.on('data',(d)=>handleData(d)); 
+
+  function handleIncomingData(payload) {
+    if(payload.type === 'location') {
+      remoteLocSpan.innerText = payload.data;
+    } else if(payload.type === 'note') {
+      remoteNoteSpan.innerText = payload.data || "---";
+    } else if(payload.type === 'datetime') {
+      remoteDTspan.innerText = payload.data;
+    }
   }
 
-  async function getMedia(){ 
-    if(localStream && localStream.active) return localStream; 
-    try{ 
-      let s=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user"},audio:true}); 
-      localStream=s; 
-      localStreamObj=s;
-      localVideo.srcObject=s; 
-      return s; 
-    }catch(e){ 
-      try{ 
-        let s=await navigator.mediaDevices.getUserMedia({video:true,audio:true}); 
-        localStream=s; 
-        localStreamObj=s;
-        localVideo.srcObject=s; 
-        return s; 
-      }catch(e2){ 
-        alert("Please allow camera and microphone access to make calls"); 
-        throw e2; 
-      } 
-    } 
+  function setupDataChannel(connection) {
+    dataChannel = connection;
+    dataChannel.on('open', async () => {
+      await sendDataToPeer();
+      setInterval(() => {
+        if(dataChannel && dataChannel.open) {
+          dataChannel.send({ type: 'datetime', data: getPSTDateTime() });
+        }
+      }, 2000);
+    });
+    dataChannel.on('data', (data) => handleIncomingData(data));
   }
-  
-  function cleanup(){ 
-    if(localStream){ localStream.getTracks().forEach(t=>t.stop()); localStream=null; localStreamObj=null; } 
-    if(currentCall){ currentCall.close(); currentCall=null; } 
-    if(dataChannel){ dataChannel.close(); dataChannel=null; } 
-    if(peer && !peer.destroyed){ peer.destroy(); peer=null; } 
-    localVideo.srcObject=null; remoteVideo.srcObject=null; 
+
+  async function getMediaStream() {
+    if(localStream && localStream.active) return localStream;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: "user" }, 
+        audio: true 
+      });
+      localStream = stream;
+      localStreamObject = stream;
+      localVideo.srcObject = stream;
+      return stream;
+    } catch(err) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        localStream = stream;
+        localStreamObject = stream;
+        localVideo.srcObject = stream;
+        return stream;
+      } catch(err2) {
+        alert("Camera and microphone access is required for video calls");
+        throw err2;
+      }
+    }
+  }
+
+  function cleanupAll() {
+    if(localStream) {
+      localStream.getTracks().forEach(track => track.stop());
+      localStream = null;
+      localStreamObject = null;
+    }
+    if(currentCall) {
+      currentCall.close();
+      currentCall = null;
+    }
+    if(dataChannel) {
+      dataChannel.close();
+      dataChannel = null;
+    }
+    if(peerInstance && !peerInstance.destroyed) {
+      peerInstance.destroy();
+      peerInstance = null;
+    }
+    localVideo.srcObject = null;
+    remoteVideo.srcObject = null;
     window.currentCall = null;
   }
-  
-  function resetUI(){ 
-    cleanup(); 
-    landingDiv.style.display='block'; 
-    callDiv.style.display='none'; 
-    createPanelDiv.classList.remove('active'); 
-    joinPanelDiv.classList.remove('active'); 
-    waitingDiv.innerHTML='<i class="fas fa-spinner fa-pulse"></i> Waiting for participant...'; 
-    joinMsgDiv.innerHTML='<i class="fas fa-info-circle"></i> Enter code to connect'; 
-    callStatusSpan.innerHTML='Disconnected'; 
-    isCreator=false; 
-    hostTagSpan.innerText=''; 
-    currentCam="user"; 
-    document.getElementById('camDirection').innerText='Front';
-    if(localLocSpan) localLocSpan.innerHTML = "📍 Detecting your location...";
-    if(remoteLocSpan) remoteLocSpan.innerHTML = "⏳ Awaiting participant...";
+
+  function resetToLanding() {
+    cleanupAll();
+    landingDiv.style.display = 'block';
+    callDiv.style.display = 'none';
+    createPanelDiv.classList.remove('active');
+    joinPanelDiv.classList.remove('active');
+    waitingMsgDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Waiting for participant...';
+    joinMsgDiv.innerHTML = '<i class="fas fa-info-circle"></i> Enter code to connect';
+    callStatusSpan.innerHTML = 'Disconnected';
+    isCreator = false;
+    hostTagSpan.innerText = '';
+    currentCamera = "user";
+    document.getElementById('camDirection').innerText = 'Front';
+    if(localLocSpan) localLocSpan.innerHTML = "📍 Detecting...";
+    if(remoteLocSpan) remoteLocSpan.innerHTML = "⏳ Awaiting...";
   }
 
-  async function createMeeting(){
-    try{
-      createRoomBtn.disabled=true; 
-      createRoomBtn.innerHTML='<i class="fas fa-spinner fa-pulse"></i> Creating...';
+  // ========== CREATE MEETING (HOST) ==========
+  async function createMeeting() {
+    try {
+      createRoomBtn.disabled = true;
+      createRoomBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Creating...';
       
-      await getMedia(); 
-      await initLocation();
-      isCreator=true; 
-      hostTagSpan.innerText=' (Host)';
+      await getMediaStream();
+      await initMyLocation();
       
-      let roomCode = Math.random().toString(36).substring(2,10).toUpperCase();
+      isCreator = true;
+      hostTagSpan.innerText = ' (Host)';
       
-      peer = new Peer(roomCode, { 
-        config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:stun1.l.google.com:19302' }, { urls: 'stun:stun2.l.google.com:19302' }] }
+      const roomCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+      
+      peerInstance = new Peer(roomCode, {
+        config: {
+          iceServers: [
+            { urls: 'stun:stun.l.google.com:19302' },
+            { urls: 'stun:stun1.l.google.com:19302' },
+            { urls: 'stun:stun2.l.google.com:19302' }
+          ]
+        }
       });
       
-      peer.on('open', () => { 
-        roomCodeSpan.innerText = roomCode; 
-        createPanelDiv.classList.add('active'); 
-        joinPanelDiv.classList.remove('active'); 
-        waitingDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Waiting for participant to join...'; 
+      peerInstance.on('open', () => {
+        roomCodeSpan.innerText = roomCode;
+        createPanelDiv.classList.add('active');
+        joinPanelDiv.classList.remove('active');
+        waitingMsgDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Waiting for participant...';
         callStatusSpan.innerHTML = 'Waiting for connection';
-        setInterval(() => { if(localDT) localDT.innerText = getPSTDateTime(); }, 1000);
+        
+        setInterval(() => {
+          if(localDTspan) localDTspan.innerText = getPSTDateTime();
+        }, 1000);
       });
       
-      peer.on('call', async (incomingCall) => { 
-        if(!localStream) await getMedia(); 
-        currentCall = incomingCall; 
+      peerInstance.on('call', async (incomingCall) => {
+        if(!localStream) await getMediaStream();
+        currentCall = incomingCall;
         window.currentCall = currentCall;
-        currentCall.answer(localStream); 
-        currentCall.on('stream', (remoteStream) => { 
-          remoteVideo.srcObject = remoteStream; 
-          landingDiv.style.display = 'none'; 
-          callDiv.style.display = 'block'; 
-          callStatusSpan.innerHTML = '📞 Live Call'; 
-          waitingDiv.innerHTML = '<i class="fas fa-check-circle"></i> Participant connected!'; 
-        }); 
-        currentCall.on('close', () => { 
-          resetUI(); 
-        }); 
+        currentCall.answer(localStream);
         
-        peer.on('connection', (conn) => setupChannel(conn)); 
+        currentCall.on('stream', (remoteStream) => {
+          remoteVideo.srcObject = remoteStream;
+          landingDiv.style.display = 'none';
+          callDiv.style.display = 'block';
+          callStatusSpan.innerHTML = '📞 Live Call';
+          waitingMsgDiv.innerHTML = '<i class="fas fa-check-circle"></i> Participant connected!';
+        });
+        
+        currentCall.on('close', () => resetToLanding());
+        
+        peerInstance.on('connection', (conn) => setupDataChannel(conn));
+        
         setTimeout(() => {
-          let dc = peer.connect(incomingCall.peer, { label: 'meet-data' }); 
-          setupChannel(dc); 
+          const dataConn = peerInstance.connect(incomingCall.peer, { label: 'meet-data' });
+          setupDataChannel(dataConn);
         }, 500);
       });
       
-      peer.on('error', (err) => { 
+      peerInstance.on('error', (err) => {
         console.error("Peer error:", err);
-        alert("Connection error. Please refresh and try again."); 
-        resetUI(); 
+        alert("Connection error. Please refresh and try again.");
+        resetToLanding();
       });
       
-      createRoomBtn.disabled = false; 
+      createRoomBtn.disabled = false;
       createRoomBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Create Meeting';
-    } catch(e){ 
-      console.error(e);
-      alert("Failed to create meeting: " + e.message); 
-      resetUI(); 
+      
+    } catch(error) {
+      console.error("Create meeting error:", error);
+      alert("Failed to create meeting: " + error.message);
+      resetToLanding();
     }
   }
 
-  async function joinMeeting(){
-    let code = joinCodeField.value.trim().toUpperCase();
-    let note = noteField.value.trim();
-    if(!code){ joinMsgDiv.innerHTML='<i class="fas fa-exclamation-triangle"></i> Enter valid code'; return; }
-    myNote = note || "No note";
-    try{
-      connectMeeting.disabled=true; 
-      connectMeeting.innerHTML='<i class="fas fa-spinner fa-pulse"></i> Connecting...';
+  // ========== JOIN MEETING (PARTICIPANT) ==========
+  async function joinMeeting() {
+    const code = joinCodeInput.value.trim().toUpperCase();
+    const note = noteInput.value.trim();
+    
+    if(!code) {
+      joinMsgDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Enter a valid code';
+      return;
+    }
+    
+    myStatusNote = note || "No note";
+    
+    try {
+      connectMeetingBtn.disabled = true;
+      connectMeetingBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Connecting...';
       
-      await getMedia(); 
-      await initLocation();
-      isCreator=false; 
-      hostTagSpan.innerText='';
+      await getMediaStream();
+      await initMyLocation();
       
-      let myId = 'user_' + Math.random().toString(36).substring(2,12);
+      isCreator = false;
+      hostTagSpan.innerText = '';
       
-      peer = new Peer(myId, { 
-        config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:stun1.l.google.com:19302' }, { urls: 'stun:stun2.l.google.com:19302' }] }
+      const myId = 'user_' + Math.random().toString(36).substring(2, 12);
+      
+      peerInstance = new Peer(myId, {
+        config: {
+          iceServers: [
+            { urls: 'stun:stun.l.google.com:19302' },
+            { urls: 'stun:stun1.l.google.com:19302' }
+          ]
+        }
       });
       
-      peer.on('open', () => { 
+      peerInstance.on('open', () => {
         callStatusSpan.innerHTML = 'Connecting to host...';
-        setInterval(() => { if(localDT) localDT.innerText = getPSTDateTime(); }, 1000); 
         
-        currentCall = peer.call(code, localStream); 
+        setInterval(() => {
+          if(localDTspan) localDTspan.innerText = getPSTDateTime();
+        }, 1000);
+        
+        currentCall = peerInstance.call(code, localStream);
         window.currentCall = currentCall;
-        currentCall.on('stream', (remoteStream) => { 
-          remoteVideo.srcObject = remoteStream; 
-          landingDiv.style.display = 'none'; 
-          callDiv.style.display = 'block'; 
-          callStatusSpan.innerHTML = '📞 Live Call'; 
-          joinMsgDiv.innerHTML = '<i class="fas fa-check-circle"></i> Connected!'; 
-          setTimeout(() => sendData(), 600); 
-        }); 
-        currentCall.on('close', () => { 
-          resetUI(); 
-        }); 
-        currentCall.on('error', (err) => { 
-          console.error("Call error:", err);
-          joinMsgDiv.innerHTML = '<i class="fas fa-times-circle"></i> Cannot connect to room. Check code.'; 
-          resetUI(); 
-        }); 
         
-        setTimeout(() => { 
-          let dc = peer.connect(code, { label: 'meet-data' }); 
-          setupChannel(dc); 
-        }, 800); 
+        currentCall.on('stream', (remoteStream) => {
+          remoteVideo.srcObject = remoteStream;
+          landingDiv.style.display = 'none';
+          callDiv.style.display = 'block';
+          callStatusSpan.innerHTML = '📞 Live Call';
+          joinMsgDiv.innerHTML = '<i class="fas fa-check-circle"></i> Connected!';
+          setTimeout(() => sendDataToPeer(), 600);
+        });
+        
+        currentCall.on('close', () => resetToLanding());
+        currentCall.on('error', () => {
+          joinMsgDiv.innerHTML = '<i class="fas fa-times-circle"></i> Cannot connect to host';
+          resetToLanding();
+        });
+        
+        setTimeout(() => {
+          const dataConn = peerInstance.connect(code, { label: 'meet-data' });
+          setupDataChannel(dataConn);
+        }, 800);
       });
       
-      peer.on('error', (err) => { 
-        console.error("Peer error:", err);
-        joinMsgDiv.innerHTML = '<i class="fas fa-times-circle"></i> Invalid meeting code or network issue'; 
-        resetUI(); 
+      peerInstance.on('error', () => {
+        joinMsgDiv.innerHTML = '<i class="fas fa-times-circle"></i> Invalid meeting code or host offline';
+        resetToLanding();
       });
       
-      connectMeeting.disabled=false; 
-      connectMeeting.innerHTML='<i class="fas fa-arrow-right"></i> Connect Now';
-    } catch(e){ 
-      console.error(e);
-      alert("Join error: " + e.message); 
-      resetUI(); 
+      connectMeetingBtn.disabled = false;
+      connectMeetingBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Connect Now';
+      
+    } catch(error) {
+      console.error("Join error:", error);
+      alert("Failed to join meeting: " + error.message);
+      resetToLanding();
     }
   }
 
-  function toggleAudio(){ if(localStream){ let t=localStream.getAudioTracks()[0]; if(t){ audioActive=!audioActive; t.enabled=audioActive; audioToggleBtn.innerHTML=audioActive?'<i class="fas fa-microphone"></i>':'<i class="fas fa-microphone-slash"></i>'; } } }
-  function toggleVideo(){ if(localStream){ let t=localStream.getVideoTracks()[0]; if(t){ videoActive=!videoActive; t.enabled=videoActive; videoToggleBtn.innerHTML=videoActive?'<i class="fas fa-video"></i>':'<i class="fas fa-video-slash"></i>'; } } }
-  function copyCode(){ let c=roomCodeSpan.innerText; if(c && c!=='------'){ navigator.clipboard.writeText(c); copyCodeBtn.innerHTML='<i class="fas fa-check"></i> Copied!'; setTimeout(()=>{ copyCodeBtn.innerHTML='<i class="fas fa-copy"></i> Copy Code'; },1500); } }
+  // ========== AUDIO/VIDEO CONTROLS ==========
+  function toggleAudio() {
+    if(localStream) {
+      const audioTrack = localStream.getAudioTracks()[0];
+      if(audioTrack) {
+        audioEnabled = !audioEnabled;
+        audioTrack.enabled = audioEnabled;
+        audioToggleBtn.innerHTML = audioEnabled ? '<i class="fas fa-microphone"></i>' : '<i class="fas fa-microphone-slash"></i>';
+      }
+    }
+  }
+  
+  function toggleVideo() {
+    if(localStream) {
+      const videoTrack = localStream.getVideoTracks()[0];
+      if(videoTrack) {
+        videoEnabled = !videoEnabled;
+        videoTrack.enabled = videoEnabled;
+        videoToggleBtn.innerHTML = videoEnabled ? '<i class="fas fa-video"></i>' : '<i class="fas fa-video-slash"></i>';
+      }
+    }
+  }
+  
+  function copyRoomCode() {
+    const code = roomCodeSpan.innerText;
+    if(code && code !== '------') {
+      navigator.clipboard.writeText(code);
+      copyCodeBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+      setTimeout(() => {
+        copyCodeBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Code';
+      }, 1500);
+    }
+  }
 
-  createRoomBtn.addEventListener('click',createMeeting);
-  showJoinBtn.addEventListener('click',()=>{ createPanelDiv.classList.remove('active'); joinPanelDiv.classList.add('active'); });
-  copyCodeBtn.addEventListener('click',copyCode);
-  connectMeeting.addEventListener('click',joinMeeting);
-  audioToggleBtn.addEventListener('click',toggleAudio);
-  videoToggleBtn.addEventListener('click',toggleVideo);
-  swapCamBtn.addEventListener('click',swapCamera);
-  endCallBtn.addEventListener('click',resetUI);
+  // ========== EVENT LISTENERS ==========
+  createRoomBtn.addEventListener('click', createMeeting);
+  showJoinBtn.addEventListener('click', () => {
+    createPanelDiv.classList.remove('active');
+    joinPanelDiv.classList.add('active');
+  });
+  copyCodeBtn.addEventListener('click', copyRoomCode);
+  connectMeetingBtn.addEventListener('click', joinMeeting);
+  audioToggleBtn.addEventListener('click', toggleAudio);
+  videoToggleBtn.addEventListener('click', toggleVideo);
+  swapCamBtn.addEventListener('click', swapCamera);
+  endCallBtn.addEventListener('click', resetToLanding);
 
-  landingDiv.style.display='block'; 
-  callDiv.style.display='none';
-  createPanelDiv.classList.remove('active'); 
+  // ========== INITIAL STATE ==========
+  landingDiv.style.display = 'block';
+  callDiv.style.display = 'none';
+  createPanelDiv.classList.remove('active');
   joinPanelDiv.classList.remove('active');
 </script>
 </body>
 </html>
-```
